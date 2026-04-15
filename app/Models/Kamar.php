@@ -13,6 +13,7 @@ class Kamar extends Model
         'nomor_kamar',
         'harga_per_bulan',
         'status',
+        'kontak_wa',
     ];
 
     public function penghuni()

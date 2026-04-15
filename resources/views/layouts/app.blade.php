@@ -6,6 +6,7 @@
     <title>{{ $title ?? 'Manajemen Kos' }}</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+    <link href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css" rel="stylesheet">
     <style>
         body {
             background: linear-gradient(145deg, #f5f7fb, #eef2ff);
@@ -139,7 +140,10 @@
     @yield('content')
 </main>
 
+<script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
 <script>
     document.addEventListener('DOMContentLoaded', () => {
         document.body.classList.add('page-ready');
@@ -159,6 +163,25 @@
         document.querySelectorAll('[data-animate]').forEach((el, idx) => {
             el.style.transitionDelay = `${Math.min(idx * 35, 220)}ms`;
             observer.observe(el);
+        });
+
+        const debounce = (fn, wait = 300) => {
+            let timeout;
+            return (...args) => {
+                clearTimeout(timeout);
+                timeout = setTimeout(() => fn(...args), wait);
+            };
+        };
+
+        document.querySelectorAll('.search-auto-submit').forEach((input) => {
+            const submitForm = debounce(() => {
+                const form = input.closest('form');
+                if (form) {
+                    form.submit();
+                }
+            });
+
+            input.addEventListener('input', submitForm);
         });
     });
 </script>

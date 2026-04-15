@@ -144,16 +144,15 @@
     const ctx = document.getElementById('pendapatanChart');
     if (ctx) {
         new Chart(ctx, {
-            type: 'line',
+            type: 'bar',
             data: {
                 labels: labelsPendapatan,
                 datasets: [{
                     label: 'Pendapatan Lunas',
                     data: dataPendapatan,
+                    backgroundColor: 'rgba(79, 70, 229, 0.65)',
                     borderColor: '#4f46e5',
-                    backgroundColor: 'rgba(79, 70, 229, 0.15)',
-                    fill: true,
-                    tension: 0.25
+                    borderWidth: 1
                 }]
             },
             options: {

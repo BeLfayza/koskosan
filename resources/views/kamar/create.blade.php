@@ -22,6 +22,13 @@
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
                     </div>
+                    <div>
+                        <label class="form-label">Kontak WhatsApp</label>
+                        <input type="text" name="kontak_wa" class="form-control @error('kontak_wa') is-invalid @enderror" value="{{ old('kontak_wa') }}" placeholder="6281234567890">
+                        @error('kontak_wa')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
+                    </div>
                     <div class="d-flex gap-2">
                         <button class="btn btn-primary">Simpan</button>
                         <a href="{{ route('kamar.index') }}" class="btn btn-outline-secondary">Batal</a>

@@ -6,7 +6,7 @@
         <div class="card card-soft">
             <div class="card-body p-4">
                 <h4 class="fw-bold mb-3">Edit Penghuni</h4>
-                <form action="{{ route('penghuni.update', $penghuni) }}" method="POST" class="row g-3">
+                <form action="{{ route('penghuni.update', $penghuni) }}" method="POST" class="row g-3" enctype="multipart/form-data">
                     @csrf
                     @method('PUT')
                     <div class="col-md-6">
@@ -45,6 +45,30 @@
                             @endforeach
                         </select>
                         @error('kamar_id') <div class="invalid-feedback">{{ $message }}</div> @enderror
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label">Foto KTP</label>
+                        <input type="file" name="foto_ktp" class="form-control @error('foto_ktp') is-invalid @enderror" accept="image/*">
+                        @error('foto_ktp') <div class="invalid-feedback">{{ $message }}</div> @enderror
+                        @if($penghuni->foto_ktp)
+                            <div class="form-text">Tersimpan: <a href="{{ asset('storage/' . $penghuni->foto_ktp) }}" target="_blank">Lihat</a></div>
+                        @endif
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label">Foto KK</label>
+                        <input type="file" name="foto_kk" class="form-control @error('foto_kk') is-invalid @enderror" accept="image/*">
+                        @error('foto_kk') <div class="invalid-feedback">{{ $message }}</div> @enderror
+                        @if($penghuni->foto_kk)
+                            <div class="form-text">Tersimpan: <a href="{{ asset('storage/' . $penghuni->foto_kk) }}" target="_blank">Lihat</a></div>
+                        @endif
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label">Foto Diri</label>
+                        <input type="file" name="foto_diri" class="form-control @error('foto_diri') is-invalid @enderror" accept="image/*">
+                        @error('foto_diri') <div class="invalid-feedback">{{ $message }}</div> @enderror
+                        @if($penghuni->foto_diri)
+                            <div class="form-text">Tersimpan: <a href="{{ asset('storage/' . $penghuni->foto_diri) }}" target="_blank">Lihat</a></div>
+                        @endif
                     </div>
                     <div class="col-12 d-flex gap-2">
                         <button class="btn btn-primary">Update</button>

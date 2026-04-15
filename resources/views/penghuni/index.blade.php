@@ -9,17 +9,17 @@
     <a href="{{ route('penghuni.create') }}" class="btn btn-primary"><i class="bi bi-plus-lg me-1"></i>Tambah Penghuni</a>
 </div>
 
-<form method="GET" class="card card-soft mb-3">
-    <div class="card-body d-flex gap-2">
-        <input type="text" name="q" class="form-control" placeholder="Cari nama / NIK / no hp / kamar..." value="{{ request('q') }}">
-        <button class="btn btn-outline-primary">Cari</button>
+<div class="card card-soft mb-3">
+    <div class="card-body">
+        <label class="form-label">Cari Penghuni</label>
+        <input id="penghuniSearch" type="text" class="form-control" placeholder="Cari nama / NIK / no hp / kamar...">
     </div>
-</form>
+</div>
 
 <div class="card card-soft">
     <div class="card-body">
         <div class="table-responsive">
-            <table class="table align-middle">
+            <table id="penghuniTable" class="table align-middle datatable">
                 <thead>
                     <tr>
                         <th>Nama</th>
@@ -57,7 +57,23 @@
                 </tbody>
             </table>
         </div>
-        {{ $penghunis->links() }}
     </div>
 </div>
 @endsection
+
+@push('scripts')
+<script>
+    $(document).ready(function () {
+        const penghuniTable = $('#penghuniTable').DataTable({
+            dom: 'lrtip',
+            responsive: true,
+            pageLength: 10,
+            lengthChange: false,
+        });
+
+        $('#penghuniSearch').on('input', function () {
+            penghuniTable.search(this.value).draw();
+        });
+    });
+</script>
+@endpush

@@ -16,6 +16,9 @@ class Penghuni extends Model
         'tanggal_masuk',
         'tanggal_selesai',
         'kamar_id',
+        'foto_ktp',
+        'foto_kk',
+        'foto_diri',
     ];
 
     protected $casts = [

@@ -9,17 +9,19 @@
     <a href="{{ route('kamar.create') }}" class="btn btn-primary"><i class="bi bi-plus-lg me-1"></i>Tambah Kamar</a>
 </div>
 
-<form method="GET" class="card card-soft mb-3">
-    <div class="card-body d-flex gap-2">
-        <input type="text" name="q" class="form-control" placeholder="Cari nomor kamar / status..." value="{{ request('q') }}">
-        <button class="btn btn-outline-primary">Cari</button>
+<div class="card card-soft mb-3">
+    <div class="card-body row g-2">
+        <div class="col-md-4">
+            <label class="form-label">Cari</label>
+            <input id="kamarSearch" type="text" class="form-control" placeholder="Cari nomor kamar / status...">
+        </div>
     </div>
-</form>
+</div>
 
 <div class="card card-soft">
     <div class="card-body">
         <div class="table-responsive">
-            <table class="table align-middle">
+            <table id="kamarTable" class="table align-middle datatable">
                 <thead>
                     <tr>
                         <th>Nomor Kamar</th>
@@ -57,7 +59,39 @@
                 </tbody>
             </table>
         </div>
-        {{ $kamars->links() }}
     </div>
 </div>
 @endsection
+
+@push('scripts')
+<script>
+    $(document).ready(function () {
+        const kamarTable = $('#kamarTable').DataTable({
+            dom: 'lrtip',
+            responsive: true,
+            pageLength: 10,
+            lengthChange: false,
+        });
+
+        $.fn.dataTable.ext.search.push(function (settings, data, dataIndex) {
+            if (settings.nTable.id !== 'kamarTable') {
+                return true;
+            }
+
+            const min = parseFloat($('#minHarga').val()) || 0;
+            const max = parseFloat($('#maxHarga').val()) || Infinity;
+            const harga = parseFloat(data[1].replace(/[^0-9]/g, '')) || 0;
+
+            return harga >= min && harga <= max;
+        });
+
+        $('#kamarSearch').on('input', function () {
+            kamarTable.search(this.value).draw();
+        });
+
+        $('#minHarga, #maxHarga').on('input', function () {
+            kamarTable.draw();
+        });
+    });
+</script>
+@endpush

@@ -8,17 +8,17 @@
     </div>
 </div>
 
-<form method="GET" class="card card-soft mb-3">
-    <div class="card-body d-flex gap-2">
-        <input type="text" name="q" class="form-control" placeholder="Cari nomor kamar..." value="{{ request('q') }}">
-        <button class="btn btn-outline-primary">Cari</button>
+<div class="card card-soft mb-3">
+    <div class="card-body">
+        <label class="form-label">Cari Kamar</label>
+        <input id="pembayaranSearch" type="text" class="form-control" placeholder="Cari nomor kamar...">
     </div>
-</form>
+</div>
 
 <div class="card card-soft">
     <div class="card-body">
         <div class="table-responsive">
-            <table class="table align-middle">
+            <table id="pembayaranTable" class="table align-middle datatable">
                 <thead>
                     <tr>
                         <th>Kamar</th>
@@ -52,3 +52,20 @@
     </div>
 </div>
 @endsection
+
+@push('scripts')
+<script>
+    $(document).ready(function () {
+        const pembayaranTable = $('#pembayaranTable').DataTable({
+            dom: 'lrtip',
+            responsive: true,
+            pageLength: 10,
+            lengthChange: false,
+        });
+
+        $('#pembayaranSearch').on('input', function () {
+            pembayaranTable.search(this.value).draw();
+        });
+    });
+</script>
+@endpush

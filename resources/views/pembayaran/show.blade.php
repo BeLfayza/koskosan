@@ -1,14 +1,19 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="d-flex justify-content-between align-items-center mb-3">
+<div class="d-flex justify-content-between align-items-center mb-3 flex-column flex-md-row gap-2">
     <div>
         <h3 class="fw-bold mb-1">Pembayaran Kamar {{ $kamar->nomor_kamar }}</h3>
         <p class="text-muted mb-0">
             Harga per bulan: <strong>Rp {{ number_format($kamar->harga_per_bulan, 0, ',', '.') }}</strong>
         </p>
     </div>
-    <a href="{{ route('pembayaran.index') }}" class="btn btn-outline-secondary">Kembali</a>
+    <div class="d-flex gap-2 align-items-center flex-wrap">
+        <a href="{{ $whatsappUrl }}" target="_blank" rel="noopener noreferrer" class="btn btn-success">
+            Teruskan Tagihan ke WhatsApp
+        </a>
+        <a href="{{ route('pembayaran.index') }}" class="btn btn-outline-secondary">Kembali</a>
+    </div>
 </div>
 
 <div class="card card-soft">

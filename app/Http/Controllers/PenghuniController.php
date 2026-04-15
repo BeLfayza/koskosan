@@ -7,6 +7,7 @@ use App\Models\Pembayaran;
 use App\Models\Penghuni;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rule;
 
 class PenghuniController extends Controller
@@ -27,8 +28,7 @@ class PenghuniController extends Controller
                 });
             })
             ->latest()
-            ->paginate(10)
-            ->withQueryString();
+            ->get();
 
         return view('penghuni.index', compact('penghunis'));
     }
@@ -49,7 +49,20 @@ class PenghuniController extends Controller
             'tanggal_masuk' => ['required', 'date'],
             'tanggal_selesai' => ['required', 'date', 'after_or_equal:tanggal_masuk'],
             'kamar_id' => ['nullable', 'exists:kamars,id'],
+            'foto_ktp' => ['nullable', 'image', 'mimes:jpg,jpeg,png', 'max:4096'],
+            'foto_kk' => ['nullable', 'image', 'mimes:jpg,jpeg,png', 'max:4096'],
+            'foto_diri' => ['nullable', 'image', 'mimes:jpg,jpeg,png', 'max:4096'],
         ]);
+
+        if ($request->hasFile('foto_ktp')) {
+            $validated['foto_ktp'] = $request->file('foto_ktp')->store('penghunis', 'public');
+        }
+        if ($request->hasFile('foto_kk')) {
+            $validated['foto_kk'] = $request->file('foto_kk')->store('penghunis', 'public');
+        }
+        if ($request->hasFile('foto_diri')) {
+            $validated['foto_diri'] = $request->file('foto_diri')->store('penghunis', 'public');
+        }
 
         $penghuni = Penghuni::create($validated);
         $this->syncKamarStatus($penghuni->kamar);
@@ -80,7 +93,23 @@ class PenghuniController extends Controller
             'tanggal_masuk' => ['required', 'date'],
             'tanggal_selesai' => ['required', 'date', 'after_or_equal:tanggal_masuk'],
             'kamar_id' => ['nullable', 'exists:kamars,id'],
+            'foto_ktp' => ['nullable', 'image', 'mimes:jpg,jpeg,png', 'max:4096'],
+            'foto_kk' => ['nullable', 'image', 'mimes:jpg,jpeg,png', 'max:4096'],
+            'foto_diri' => ['nullable', 'image', 'mimes:jpg,jpeg,png', 'max:4096'],
         ]);
+
+        if ($request->hasFile('foto_ktp')) {
+            Storage::disk('public')->delete($penghuni->foto_ktp);
+            $validated['foto_ktp'] = $request->file('foto_ktp')->store('penghunis', 'public');
+        }
+        if ($request->hasFile('foto_kk')) {
+            Storage::disk('public')->delete($penghuni->foto_kk);
+            $validated['foto_kk'] = $request->file('foto_kk')->store('penghunis', 'public');
+        }
+        if ($request->hasFile('foto_diri')) {
+            Storage::disk('public')->delete($penghuni->foto_diri);
+            $validated['foto_diri'] = $request->file('foto_diri')->store('penghunis', 'public');
+        }
 
         $penghuni->update($validated);
         $this->syncKamarStatus($oldKamar);
