@@ -32,14 +32,12 @@ class KamarController extends Controller
         $validated = $request->validate([
             'nomor_kamar' => ['required', 'max:50', 'unique:kamars,nomor_kamar'],
             'harga_per_bulan' => ['required', 'numeric', 'min:0'],
-            'kontak_wa' => ['nullable', 'string', 'max:25'],
         ]);
 
         Kamar::create([
             'nomor_kamar' => $validated['nomor_kamar'],
             'harga_per_bulan' => $validated['harga_per_bulan'],
             'status' => 'tidak_terisi',
-            'kontak_wa' => $validated['kontak_wa'] ?? null,
         ]);
 
         return redirect()->route('kamar.index')->with('success', 'Kamar berhasil ditambahkan.');
@@ -59,7 +57,6 @@ class KamarController extends Controller
                 Rule::unique('kamars', 'nomor_kamar')->ignore($kamar->id),
             ],
             'harga_per_bulan' => ['required', 'numeric', 'min:0'],
-            'kontak_wa' => ['nullable', 'string', 'max:25'],
         ]);
 
         $kamar->update($validated);

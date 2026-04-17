@@ -50,9 +50,6 @@
                             </td>
                         </tr>
                     @empty
-                        <tr>
-                            <td colspan="7" class="text-center text-muted py-4">Belum ada data penghuni.</td>
-                        </tr>
                     @endforelse
                 </tbody>
             </table>

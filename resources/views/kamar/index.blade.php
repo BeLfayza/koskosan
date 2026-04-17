@@ -52,9 +52,6 @@
                             </td>
                         </tr>
                     @empty
-                        <tr>
-                            <td colspan="5" class="text-center text-muted py-4">Belum ada data kamar.</td>
-                        </tr>
                     @endforelse
                 </tbody>
             </table>
