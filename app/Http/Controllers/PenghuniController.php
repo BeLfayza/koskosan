@@ -54,6 +54,16 @@ class PenghuniController extends Controller
             'foto_diri' => ['nullable', 'image', 'mimes:jpg,jpeg,png', 'max:4096'],
         ]);
 
+        $selectedNames = array_filter([
+            $request->hasFile('foto_ktp') ? $request->file('foto_ktp')->getClientOriginalName() : null,
+            $request->hasFile('foto_kk') ? $request->file('foto_kk')->getClientOriginalName() : null,
+            $request->hasFile('foto_diri') ? $request->file('foto_diri')->getClientOriginalName() : null,
+        ]);
+
+        if (count($selectedNames) !== count(array_unique($selectedNames))) {
+            return back()->withErrors(['foto_ktp' => 'Nama file tidak boleh sama untuk dokumen yang berbeda.'])->withInput();
+        }
+
         if ($request->hasFile('foto_ktp')) {
             $validated['foto_ktp'] = $request->file('foto_ktp')->store('penghunis', 'public');
         }
@@ -97,6 +107,16 @@ class PenghuniController extends Controller
             'foto_kk' => ['nullable', 'image', 'mimes:jpg,jpeg,png', 'max:4096'],
             'foto_diri' => ['nullable', 'image', 'mimes:jpg,jpeg,png', 'max:4096'],
         ]);
+
+        $selectedNames = array_filter([
+            $request->hasFile('foto_ktp') ? $request->file('foto_ktp')->getClientOriginalName() : null,
+            $request->hasFile('foto_kk') ? $request->file('foto_kk')->getClientOriginalName() : null,
+            $request->hasFile('foto_diri') ? $request->file('foto_diri')->getClientOriginalName() : null,
+        ]);
+
+        if (count($selectedNames) !== count(array_unique($selectedNames))) {
+            return back()->withErrors(['foto_ktp' => 'Nama file tidak boleh sama untuk dokumen yang berbeda.'])->withInput();
+        }
 
         if ($request->hasFile('foto_ktp')) {
             Storage::disk('public')->delete($penghuni->foto_ktp);

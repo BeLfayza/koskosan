@@ -15,7 +15,32 @@
     <div class="card-body">
         <form method="GET" class="row g-2 align-items-end">
             <div class="col-md-3">
-                <label class="form-label">Tahun</label>
+                <label class="form-label">Jenis Periode</label>
+                <select name="periode" id="periodeType" class="form-select">
+                    <option value="tanggal" {{ $periode === 'tanggal' ? 'selected' : '' }}>Per Tanggal</option>
+                    <option value="minggu" {{ $periode === 'minggu' ? 'selected' : '' }}>Per Minggu</option>
+                    <option value="bulan" {{ $periode === 'bulan' ? 'selected' : '' }}>Per Bulan</option>
+                    <option value="tahun" {{ $periode === 'tahun' ? 'selected' : '' }}>Per Tahun</option>
+                </select>
+            </div>
+            <div class="col-md-3 periode-field periode-tanggal {{ $periode !== 'tanggal' ? 'd-none' : '' }}">
+                <label class="form-label">Tanggal Awal</label>
+                <input type="date" name="tanggal_awal" class="form-control" value="{{ $tanggalAwal }}">
+            </div>
+            <div class="col-md-3 periode-field periode-tanggal {{ $periode !== 'tanggal' ? 'd-none' : '' }}">
+                <label class="form-label">Tanggal Akhir</label>
+                <input type="date" name="tanggal_akhir" class="form-control" value="{{ $tanggalAkhir }}">
+            </div>
+            <div class="col-md-3 periode-field periode-minggu {{ $periode !== 'minggu' ? 'd-none' : '' }}">
+                <label class="form-label">Pilih Minggu</label>
+                <input type="week" name="periode_minggu" class="form-control" value="{{ $periodeMinggu }}">
+            </div>
+            <div class="col-md-3 periode-field periode-bulan {{ $periode !== 'bulan' ? 'd-none' : '' }}">
+                <label class="form-label">Pilih Bulan</label>
+                <input type="month" name="periode_bulan" class="form-control" value="{{ $periodeBulan }}">
+            </div>
+            <div class="col-md-3 periode-field periode-tahun {{ $periode !== 'tahun' ? 'd-none' : '' }}">
+                <label class="form-label">Pilih Tahun</label>
                 <input type="number" min="2000" max="2100" name="tahun" class="form-control" value="{{ $inputTahun }}">
             </div>
             <div class="col-md-2">
@@ -82,3 +107,31 @@
     </div>
 </div>
 @endsection
+
+@push('scripts')
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const periodSelect = document.getElementById('periodeType');
+        const fields = {
+            tanggal: document.querySelectorAll('.periode-field.periode-tanggal'),
+            minggu: document.querySelectorAll('.periode-field.periode-minggu'),
+            bulan: document.querySelectorAll('.periode-field.periode-bulan'),
+            tahun: document.querySelectorAll('.periode-field.periode-tahun'),
+        };
+
+        const updateVisibility = () => {
+            const value = periodSelect.value;
+            Object.keys(fields).forEach((key) => {
+                fields[key].forEach((field) => {
+                    field.style.display = key === value ? '' : 'none';
+                });
+            });
+        };
+
+        if (periodSelect) {
+            periodSelect.addEventListener('change', updateVisibility);
+            updateVisibility();
+        }
+    });
+</script>
+@endpush

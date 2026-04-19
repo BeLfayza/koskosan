@@ -10,11 +10,9 @@
 </div>
 
 <div class="card card-soft mb-3">
-    <div class="card-body row g-2">
-        <div class="col-md-4">
-            <label class="form-label">Cari</label>
-            <input id="kamarSearch" type="text" class="form-control" placeholder="Cari nomor kamar / status...">
-        </div>
+    <div class="card-body">
+        <label class="form-label">Cari</label>
+        <input id="kamarSearch" type="text" class="form-control" placeholder="Cari nomor kamar / status...">
     </div>
 </div>
 
@@ -70,24 +68,8 @@
             lengthChange: false,
         });
 
-        $.fn.dataTable.ext.search.push(function (settings, data, dataIndex) {
-            if (settings.nTable.id !== 'kamarTable') {
-                return true;
-            }
-
-            const min = parseFloat($('#minHarga').val()) || 0;
-            const max = parseFloat($('#maxHarga').val()) || Infinity;
-            const harga = parseFloat(data[1].replace(/[^0-9]/g, '')) || 0;
-
-            return harga >= min && harga <= max;
-        });
-
         $('#kamarSearch').on('input', function () {
             kamarTable.search(this.value).draw();
-        });
-
-        $('#minHarga, #maxHarga').on('input', function () {
-            kamarTable.draw();
         });
     });
 </script>

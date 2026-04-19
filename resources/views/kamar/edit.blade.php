@@ -18,10 +18,11 @@
                     </div>
                     <div>
                         <label class="form-label">Harga Per Bulan</label>
-                        <input type="number" step="1000" min="0" name="harga_per_bulan" class="form-control @error('harga_per_bulan') is-invalid @enderror" value="{{ old('harga_per_bulan', $kamar->harga_per_bulan) }}" required>
+                        <input id="hargaPerBulan" type="text" inputmode="numeric" name="harga_per_bulan" class="form-control @error('harga_per_bulan') is-invalid @enderror" value="{{ old('harga_per_bulan', $kamar->harga_per_bulan) }}" required>
                         @error('harga_per_bulan')
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
+                        <div class="invalid-feedback d-none" id="hargaPerBulanFeedback">Teks yang dimasukkan harus angka.</div>
                     </div>
                     <div>
                         <label class="form-label">Status</label>
@@ -38,3 +39,33 @@
     </div>
 </div>
 @endsection
+
+@push('scripts')
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const hargaInput = document.getElementById('hargaPerBulan');
+        const feedback = document.getElementById('hargaPerBulanFeedback');
+
+        if (!hargaInput) {
+            return;
+        }
+
+        const validateHarga = () => {
+            const value = hargaInput.value.trim();
+            const valid = /^\d*$/.test(value);
+
+            if (!valid && value !== '') {
+                hargaInput.classList.add('is-invalid');
+                feedback.classList.remove('d-none');
+                hargaInput.value = value.replace(/[^0-9]/g, '');
+            } else {
+                hargaInput.classList.remove('is-invalid');
+                feedback.classList.add('d-none');
+            }
+        };
+
+        hargaInput.addEventListener('input', validateHarga);
+        hargaInput.addEventListener('blur', validateHarga);
+    });
+</script>
+@endpush

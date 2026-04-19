@@ -68,6 +68,16 @@
         .form-control:focus, .form-select:focus {
             transform: translateY(-1px);
         }
+        input[type=number].no-spin::-webkit-inner-spin-button,
+        input[type=number].no-spin::-webkit-outer-spin-button {
+            appearance: none;
+            -webkit-appearance: none;
+            margin: 0;
+        }
+        input[type=number].no-spin {
+            appearance: textfield;
+            -moz-appearance: textfield;
+        }
         [data-animate] {
             opacity: 0;
             transform: translateY(14px);
