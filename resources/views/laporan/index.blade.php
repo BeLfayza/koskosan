@@ -112,6 +112,7 @@
 <script>
     document.addEventListener('DOMContentLoaded', () => {
         const periodSelect = document.getElementById('periodeType');
+        const form = periodSelect.closest('form');
         const fields = {
             tanggal: document.querySelectorAll('.periode-field.periode-tanggal'),
             minggu: document.querySelectorAll('.periode-field.periode-minggu'),
@@ -128,10 +129,22 @@
             });
         };
 
+        const autoSubmit = () => {
+            form.submit();
+        };
+
         if (periodSelect) {
-            periodSelect.addEventListener('change', updateVisibility);
+            periodSelect.addEventListener('change', () => {
+                updateVisibility();
+                autoSubmit();
+            });
             updateVisibility();
         }
+
+        // Auto-submit when any input field changes
+        document.querySelectorAll('input[name="tanggal_awal"], input[name="tanggal_akhir"], input[name="periode_minggu"], input[name="periode_bulan"], input[name="tahun"]').forEach(input => {
+            input.addEventListener('change', autoSubmit);
+        });
     });
 </script>
 @endpush
