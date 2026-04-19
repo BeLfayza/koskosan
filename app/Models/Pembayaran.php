@@ -14,6 +14,7 @@ class Pembayaran extends Model
         'periode_bulan',
         'nominal',
         'status',
+        'paid_at',
     ];
 
     protected $casts = [
